@@ -1,0 +1,1 @@
+export default { content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'], theme: { extend: { colors: { darkBg: '#000000', cardTop: '#4c5e4a', cardBottom: '#2d2d2d', brandBlue: '#0A84FF' } } }, plugins: [] }
