@@ -1,11 +1,91 @@
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Calendar, PenLine, LogOut } from 'lucide-react';
-import EmotionCard from '../components/EmotionCard';
-import { AppContext } from '../context/AppContext';
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Calendar, PenLine, LogOut } from "lucide-react";
+import EmotionCard from "../components/EmotionCard";
+import { AppContext } from "../context/AppContext";
+
 export default function Home() {
-  const navigate = useNavigate(); const { diaries, user, logout } = useContext(AppContext);
-  const getTodayString = () => { const today = new Date(); return `${today.getMonth() + 1}월 ${today.getDate()}일`; };
-  const todayDateString = new Date().toISOString().split('T')[0]; const todayDiary = diaries.find(d => d.date === todayDateString);
-  return (<div className="flex flex-col h-screen overflow-y-auto hide-scrollbar pb-32"><header className="flex justify-between items-center px-4 pt-12 pb-4"><button onClick={logout} className="w-10 h-10 rounded-full bg-[#1C1C1E] flex items-center justify-center"><LogOut className="w-5 h-5 text-[#8E8E93]" /></button><h1 className="text-[17px] font-semibold text-white">{user?.name}님의 마음 상태</h1><button className="w-10 h-10 rounded-full bg-[#1C1C1E] flex items-center justify-center"><Calendar className="w-5 h-5 text-white" /></button></header><div className="flex justify-between items-center px-5 mt-2 mb-4"><h2 className="text-[28px] font-bold text-white tracking-tight">오늘, {getTodayString()}</h2>{!todayDiary && (<button onClick={() => navigate('/write')} className="bg-brandBlue text-white font-semibold text-[14px] px-4 py-1.5 rounded-full flex items-center gap-1"><PenLine className="w-4 h-4" /> 기록</button>)}</div><div className="px-5"><EmotionCard emotion={todayDiary?.emotion} /></div>{todayDiary && (<div className="px-5 mt-6 space-y-4"><div className="bg-[#1C1C1E] p-6 rounded-[24px]"><h4 className="text-[13px] font-bold text-brandBlue mb-2">오늘의 일기</h4><p className="text-[#D1D1D6] text-[15px] leading-relaxed whitespace-pre-wrap">{todayDiary.content}</p></div><div className="bg-gradient-to-br from-[#2C2C2E] to-[#1C1C1E] p-6 rounded-[24px] border border-white/5"><h4 className="text-[13px] font-bold text-[#A78BFA] mb-2">AI 성찰 질문</h4><p className="text-white font-medium text-[16px] leading-relaxed mb-4">{todayDiary.aiQuestion}</p><div className="bg-[#121212] p-4 rounded-xl mb-4 border border-white/5"><h4 className="text-[12px] font-bold text-[#8E8E93] mb-1">나의 답변</h4><p className="text-[#D1D1D6] text-[14px] leading-relaxed whitespace-pre-wrap">{todayDiary.userAnswer}</p></div><div className="h-[1px] w-full bg-white/10 mb-4"></div><h4 className="text-[13px] font-bold text-[#FCD34D] mb-2">오늘의 한 문장</h4><p className="text-[#8E8E93] italic text-[14px]">"{todayDiary.aiSentence}"</p></div></div>)}</div>);
+  const navigate = useNavigate();
+  const { diaries, user, logout } = useContext(AppContext);
+
+  const getTodayString = () => {
+    const today = new Date();
+    return `${today.getMonth() + 1}월 ${today.getDate()}일`;
+  };
+
+  const todayDateString = new Date().toISOString().split("T")[0];
+  const todayDiary = diaries.find((d) => d.date === todayDateString);
+
+  return (
+    <div className="flex flex-col h-screen overflow-y-auto hide-scrollbar pb-32">
+      <header className="flex justify-between items-center px-4 pt-12 pb-4">
+        <button
+          onClick={logout}
+          className="w-10 h-10 rounded-full bg-[#1C1C1E] flex items-center justify-center"
+        >
+          <LogOut className="w-5 h-5 text-[#8E8E93]" />
+        </button>
+        <h1 className="text-[17px] font-semibold text-white">
+          {user?.name || "사용자"}님의 마음 상태
+        </h1>
+        <button className="w-10 h-10 rounded-full bg-[#1C1C1E] flex items-center justify-center">
+          <Calendar className="w-5 h-5 text-white" />
+        </button>
+      </header>
+
+      <div className="flex justify-between items-center px-5 mt-2 mb-4">
+        <h2 className="text-[28px] font-bold text-white tracking-tight">
+          오늘, {getTodayString()}
+        </h2>
+        {!todayDiary && (
+          <button
+            onClick={() => navigate("/write")}
+            className="bg-brandBlue text-white font-semibold text-[14px] px-4 py-1.5 rounded-full flex items-center gap-1"
+          >
+            <PenLine className="w-4 h-4" /> 기록
+          </button>
+        )}
+      </div>
+
+      <div className="px-5">
+        <EmotionCard emotion={todayDiary?.emotion} />
+      </div>
+
+      {todayDiary && (
+        <div className="px-5 mt-6 space-y-4">
+          <div className="bg-[#1C1C1E] p-6 rounded-[24px]">
+            <h4 className="text-[13px] font-bold text-brandBlue mb-2">
+              오늘의 일기
+            </h4>
+            <p className="text-[#D1D1D6] text-[15px] leading-relaxed whitespace-pre-wrap">
+              {todayDiary.content}
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-[#2C2C2E] to-[#1C1C1E] p-6 rounded-[24px] border border-white/5">
+            <h4 className="text-[13px] font-bold text-[#A78BFA] mb-2">
+              AI 성찰 질문
+            </h4>
+            <p className="text-white font-medium text-[16px] leading-relaxed mb-4">
+              {todayDiary.aiQuestion}
+            </p>
+            <div className="bg-[#121212] p-4 rounded-xl mb-4 border border-white/5">
+              <h4 className="text-[12px] font-bold text-[#8E8E93] mb-1">
+                나의 답변
+              </h4>
+              <p className="text-[#D1D1D6] text-[14px] leading-relaxed whitespace-pre-wrap">
+                {todayDiary.userAnswer}
+              </p>
+            </div>
+            <div className="h-[1px] w-full bg-white/10 mb-4"></div>
+            <h4 className="text-[13px] font-bold text-[#FCD34D] mb-2">
+              오늘의 한 문장
+            </h4>
+            <p className="text-[#8E8E93] italic text-[14px]">
+              "{todayDiary.aiSentence}"
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
